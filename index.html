@@ -17,15 +17,15 @@
     --fondo-2: #e6e0f7;
     --tarjeta: #fffafc;
     --texto: #a8335a;
-    --texto-suave: #c0728d;
+    --texto-suave: #b8607d;
     --verde: #34a853;
     --verde-oscuro: #278741;
-    --rosa: #e0527f;
+    --rojo: #e0412f;
+    --rojo-oscuro: #bf3223;
     --lila: #b7a8ee;
   }
 
   * { box-sizing: border-box; }
-
   html, body { height: 100%; margin: 0; }
 
   body {
@@ -42,7 +42,7 @@
   .tarjeta {
     position: relative;
     width: min(100%, 380px);
-    min-height: 420px;
+    min-height: 440px;
     background: var(--tarjeta);
     border-radius: 28px;
     padding: 32px 24px 28px;
@@ -53,79 +53,78 @@
     align-items: center;
   }
 
+  .propuesta, .exito { display: flex; flex-direction: column; align-items: center; width: 100%; flex: 1; }
+  .exito { display: none; justify-content: center; }
+  .acepto .propuesta { display: none; }
+  .acepto .exito { display: flex; animation: aparece .6s ease both; }
+  @keyframes aparece { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+
   h1 {
     margin: 0 0 18px;
-    font-size: clamp(1.45rem, 6.2vw, 1.8rem);
+    font-size: clamp(1.4rem, 6vw, 1.75rem);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .ilustracion {
-    width: 200px;
-    max-width: 70%;
+    width: 210px;
+    max-width: 72%;
     aspect-ratio: 230 / 180;
     border-radius: 18px;
     background: linear-gradient(145deg, #c9bdf3, #a9b9f0);
     padding: 6px;
     margin-bottom: 22px;
   }
+  .ilustracion.feliz { background: linear-gradient(145deg, #d8f0e4, #f7e1ee); }
   .ilustracion svg, .ilustracion img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 14px; }
 
   .corazon-flota { transform-origin: 115px 34px; animation: latido 1.6s ease-in-out infinite; }
+  .salto { animation: salto 1s ease-in-out infinite; transform-origin: 115px 170px; }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+  @keyframes salto { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
   .botones {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 14px;
     width: 100%;
-    min-height: 120px;
+    min-height: 52px;
   }
 
   button {
     font: inherit;
     cursor: pointer;
     border: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-  button:focus-visible { outline: 3px solid var(--lila); outline-offset: 3px; }
-
-  #si {
-    background: var(--verde);
     color: #fff;
     font-weight: 600;
     font-size: 1.05rem;
-    padding: 12px 34px;
+    padding: 12px 32px;
     border-radius: 999px;
-    box-shadow: 0 6px 16px rgba(52, 168, 83, .35);
-    transition: transform .2s ease, background .2s ease;
-    transform-origin: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s ease, background .2s ease;
   }
-  #si:active { background: var(--verde-oscuro); transform: scale(.97); }
+  button:focus-visible { outline: 3px solid var(--lila); outline-offset: 3px; }
+  button:active { transform: scale(.96); }
 
-  #por-favor {
-    background: transparent;
+  #si { background: var(--verde); box-shadow: 0 6px 16px rgba(52, 168, 83, .35); }
+  #si:active { background: var(--verde-oscuro); }
+  #no { background: var(--rojo); box-shadow: 0 6px 16px rgba(224, 65, 47, .3); z-index: 4; }
+  #no:active { background: var(--rojo-oscuro); }
+
+  .subtexto {
+    margin: 16px 0 0;
+    min-height: 1.5em;
     color: var(--texto-suave);
-    font-size: .95rem;
-    padding: 8px 14px;
-    transition: transform .2s ease, opacity .2s ease;
+    font-size: 1rem;
   }
 
-  /* Pantalla de respuesta */
-  .propuesta { display: contents; }
-  .exito { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 10px; }
-  .acepto .propuesta { display: none; }
-  .acepto .exito { display: flex; animation: aparece .6s ease both; }
-  @keyframes aparece { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
-
-  .exito .grande { font-size: 4rem; line-height: 1; }
-  .exito h2 { margin: 0; font-size: 1.7rem; font-weight: 600; }
-  .exito p { margin: 0; max-width: 28ch; color: var(--texto-suave); line-height: 1.4; }
+  .exito p { margin: 0; max-width: 30ch; color: var(--texto-suave); line-height: 1.45; }
+  .exito h1 { margin-bottom: 18px; }
 
   .wa {
     display: none;
-    margin-top: 10px;
+    margin-top: 16px;
     background: #25d366;
     color: #fff;
     text-decoration: none;
@@ -134,19 +133,12 @@
     border-radius: 999px;
   }
 
-  /* Corazones de celebración */
   .lluvia { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
-  .lluvia span {
-    position: absolute;
-    top: -40px;
-    animation: cae linear forwards;
-  }
-  @keyframes cae {
-    to { transform: translateY(110vh) rotate(var(--giro, 40deg)); opacity: .9; }
-  }
+  .lluvia span { position: absolute; top: -40px; animation: cae linear forwards; }
+  @keyframes cae { to { transform: translateY(110vh) rotate(var(--giro, 40deg)); opacity: .9; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .corazon-flota { animation: none; }
+    .corazon-flota, .salto { animation: none; }
     .lluvia { display: none; }
     .acepto .exito { animation: none; }
   }
@@ -156,13 +148,12 @@
 <body>
   <main class="tarjeta" id="tarjeta">
 
+    <!-- Pantalla 1: la pregunta -->
     <section class="propuesta">
       <h1 id="titulo">¿Quieres salir conmigo? <span aria-hidden="true">💖</span></h1>
 
       <div class="ilustracion" id="ilustracion">
-        <!-- Si pones tu propia imagen en config (IMAGEN), reemplaza este dibujo -->
-        <svg viewBox="0 0 230 180" role="img" aria-label="Un osito y un panda abrazados">
-          <!-- cuerpos -->
+        <svg viewBox="0 0 230 180" role="img" aria-label="Un osito y un panda juntos">
           <ellipse cx="70" cy="160" rx="36" ry="26" fill="#c9976b"/>
           <ellipse cx="160" cy="160" rx="36" ry="26" fill="#ffffff"/>
           <!-- oso -->
@@ -190,21 +181,63 @@
           <path d="M154 114 Q160 120 166 114" stroke="#2b2b33" stroke-width="2" fill="none" stroke-linecap="round"/>
           <circle cx="138" cy="110" r="6" fill="#f2a1b6" opacity=".7"/>
           <circle cx="182" cy="110" r="6" fill="#f2a1b6" opacity=".7"/>
-          <!-- corazón -->
           <path class="corazon-flota" d="M115 46 C100 33 105 20 115 26 C125 20 130 33 115 46 Z" fill="#e0527f"/>
         </svg>
       </div>
 
-      <div class="botones">
+      <div class="botones" id="botones">
         <button id="si" type="button">¡Sí!</button>
-        <button id="por-favor" type="button">Por favor...</button>
+        <button id="no" type="button">No</button>
       </div>
+      <p class="subtexto" id="subtexto" aria-live="polite"></p>
     </section>
 
+    <!-- Pantalla 2: dijo que sí -->
     <section class="exito" aria-live="polite">
-      <div class="grande" aria-hidden="true">🥰</div>
-      <h2 id="titulo-exito">¡Siii!</h2>
-      <p id="texto-exito">Acabo de recibir la mejor noticia del día.</p>
+      <h1 id="titulo-exito">¡Gooo! Vamos a ver una peli <span aria-hidden="true">🎬 💖</span></h1>
+
+      <div class="ilustracion feliz" id="ilustracion-feliz">
+        <svg viewBox="0 0 230 180" role="img" aria-label="El osito y el panda abrazados y felices">
+          <g class="salto">
+            <!-- cuerpos -->
+            <ellipse cx="84" cy="160" rx="34" ry="24" fill="#c9976b"/>
+            <ellipse cx="148" cy="160" rx="34" ry="24" fill="#ffffff" stroke="#e4dcf1" stroke-width="2"/>
+            <!-- oso -->
+            <circle cx="52" cy="60" r="15" fill="#c9976b"/>
+            <circle cx="112" cy="60" r="15" fill="#c9976b"/>
+            <circle cx="52" cy="60" r="8" fill="#e9c4a0"/>
+            <circle cx="112" cy="60" r="8" fill="#e9c4a0"/>
+            <circle cx="82" cy="96" r="44" fill="#c9976b"/>
+            <path d="M65 93 Q70 86 75 93" stroke="#3a2a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M89 93 Q94 86 99 93" stroke="#3a2a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="82" cy="108" rx="15" ry="11" fill="#f3dcc3"/>
+            <ellipse cx="82" cy="103" rx="4.5" ry="3.2" fill="#3a2a2a"/>
+            <path d="M74 110 Q82 122 90 110 Z" fill="#8c3b4a"/>
+            <circle cx="58" cy="106" r="6" fill="#f2a1b6" opacity=".8"/>
+            <circle cx="106" cy="106" r="6" fill="#f2a1b6" opacity=".8"/>
+            <!-- panda -->
+            <circle cx="118" cy="62" r="15" fill="#2b2b33"/>
+            <circle cx="178" cy="62" r="15" fill="#2b2b33"/>
+            <circle cx="148" cy="96" r="42" fill="#ffffff" stroke="#e4dcf1" stroke-width="2"/>
+            <ellipse cx="134" cy="93" rx="9" ry="11" fill="#2b2b33" transform="rotate(-18 134 93)"/>
+            <ellipse cx="162" cy="93" rx="9" ry="11" fill="#2b2b33" transform="rotate(18 162 93)"/>
+            <path d="M129 92 Q134 86 139 92" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M157 92 Q162 86 167 92" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <ellipse cx="148" cy="106" rx="5" ry="3.6" fill="#2b2b33"/>
+            <path d="M140 109 Q148 121 156 109 Z" fill="#8c3b4a"/>
+            <circle cx="126" cy="108" r="6" fill="#f2a1b6" opacity=".8"/>
+            <circle cx="170" cy="108" r="6" fill="#f2a1b6" opacity=".8"/>
+            <!-- brazos que se abrazan -->
+            <path d="M96 138 Q116 150 138 136" stroke="#c9976b" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <path d="M104 142 Q120 150 134 142" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" opacity="0"/>
+          </g>
+          <path class="corazon-flota" d="M115 30 C100 17 105 4 115 10 C125 4 130 17 115 30 Z" fill="#e0527f"/>
+          <path d="M26 40 C20 33 22 26 27 29 C32 26 34 33 26 40 Z" fill="#f2a1b6"/>
+          <path d="M204 44 C198 37 200 30 205 33 C210 30 212 37 204 44 Z" fill="#f2a1b6"/>
+        </svg>
+      </div>
+
+      <p id="texto-exito"></p>
       <a class="wa" id="wa" target="_blank" rel="noopener">Escríbeme por WhatsApp 💬</a>
     </section>
   </main>
@@ -216,56 +249,63 @@
    CONFIGURACIÓN: lo único que tienes que cambiar está aquí
    ============================================================ */
 const CONFIG = {
-  // Nombre de ella (aparece en el mensaje final y en tu notificación)
+  // Nombre de ella (aparece en tu notificación)
   NOMBRE: "Carito",
 
   // Canal de notificaciones (ntfy.sh). Debe ser único y difícil de adivinar.
   // En tu teléfono instala la app "ntfy" y suscríbete a ESTE mismo nombre.
   NTFY_CANAL: "carito-4eje7m7nsf",
 
+  // Textos de la pantalla final (después de que ella toca "¡Sí!")
+  TEXTO_FINAL: "¡Espero que estés emocionada como yo! Nos vemos en la doble",
+
+  // Frases que aparecen bajo los botones cada vez que ella toca "No".
+  // En el último toque el botón "No" desaparece y solo queda "¡Sí!".
+  RESPUESTAS_NO: [
+    "Piénsalo otra vez",
+    "No me hagas esto",
+    "Estoy empezando a llorar...",
+    "Eres cruel 😢"
+  ],
+
   // Opcional: te avisa también cuando ella abre la página
   AVISAR_AL_ABRIR: false,
 
-  // Opcional: tu número con código de país y sin "+" ni espacios (ej. 593991234567).
+  // Opcional: tu número con código de país, sin "+" ni espacios (ej. 593991234567).
   // Si lo llenas, ella verá un botón para escribirte por WhatsApp al aceptar.
   WHATSAPP: "",
 
-  // Opcional: ruta de tu propia imagen o GIF (ej. "imagen.gif"). Vacío = dibujo incluido.
+  // Opcional: tus propias imágenes o GIFs (suben junto al index.html). Vacío = dibujos incluidos.
   IMAGEN: "",
-
-  // Frases del botón "Por favor..." cada vez que lo toca
-  FRASES: [
-    "Por favor...",
-    "Piénsalo otra vez",
-    "¿Segura?",
-    "Mira que soy buena gente",
-    "Te prometo helado",
-    "Me vas a hacer llorar",
-    "Último intento...",
-    "Ya, di que sí"
-  ]
+  IMAGEN_FELIZ: ""
 };
 /* ============================================================ */
 
 const $ = (id) => document.getElementById(id);
 const tarjeta = $("tarjeta");
 const botonSi = $("si");
-const botonNo = $("por-favor");
+const botonNo = $("no");
+const subtexto = $("subtexto");
 
 let intentos = 0;
 
-/* ---------- Imagen propia (opcional) ---------- */
-if (CONFIG.IMAGEN) {
+$("texto-exito").textContent = CONFIG.TEXTO_FINAL;
+
+/* ---------- Imágenes propias (opcional) ---------- */
+function ponerImagen(ruta, contenedor) {
+  if (!ruta) return;
   const img = new Image();
   img.alt = "";
-  img.onload = () => { $("ilustracion").replaceChildren(img); };
-  img.src = CONFIG.IMAGEN;
+  img.onload = () => contenedor.replaceChildren(img);
+  img.src = ruta;
 }
+ponerImagen(CONFIG.IMAGEN, $("ilustracion"));
+ponerImagen(CONFIG.IMAGEN_FELIZ, $("ilustracion-feliz"));
 
 /* ---------- Notificación al teléfono ---------- */
 async function avisar(titulo, mensaje, etiquetas, prioridad) {
   if (!CONFIG.NTFY_CANAL) return false;
-  // Sin cabeceras personalizadas para evitar bloqueos del navegador: todo va en la URL.
+  // Sin cabeceras personalizadas (evita bloqueos del navegador): todo va en la URL.
   const url = "https://ntfy.sh/" + encodeURIComponent(CONFIG.NTFY_CANAL)
     + "?title=" + encodeURIComponent(titulo)
     + "&tags=" + encodeURIComponent(etiquetas)
@@ -289,41 +329,62 @@ if (CONFIG.AVISAR_AL_ABRIR) {
   avisar("Abrió tu mensaje", CONFIG.NOMBRE + " abrió la página (" + hora() + ")", "eyes", 3);
 }
 
-/* ---------- Botón "Por favor..." ---------- */
+/* ---------- Botón "No": huye por la pantalla ---------- */
+function moverNo() {
+  botonNo.style.position = "fixed";
+  const w = botonNo.offsetWidth;
+  const h = botonNo.offsetHeight;
+  const margen = 8;
+  const maxX = Math.max(margen, window.innerWidth - w - margen);
+  const maxY = Math.max(margen, window.innerHeight - h - margen);
+  const si = botonSi.getBoundingClientRect();
+  let x = margen, y = margen;
+
+  // Busca un lugar que no tape el botón "¡Sí!"
+  for (let i = 0; i < 40; i++) {
+    x = margen + Math.random() * (maxX - margen);
+    y = margen + Math.random() * (maxY - margen);
+    const tapa = x < si.right + 16 && x + w > si.left - 16 && y < si.bottom + 16 && y + h > si.top - 16;
+    if (!tapa) break;
+  }
+  botonNo.style.left = x + "px";
+  botonNo.style.top = y + "px";
+}
+
 botonNo.addEventListener("click", () => {
   intentos++;
-  const frases = CONFIG.FRASES;
-  botonNo.textContent = frases[Math.min(intentos, frases.length - 1)];
-
-  // El "Sí" crece y el otro botón se encoge
-  const crecer = Math.min(1 + intentos * 0.28, 2.6);
-  const encoger = Math.max(1 - intentos * 0.09, 0.55);
-  botonSi.style.transform = "scale(" + crecer + ")";
-  botonNo.style.transform = "scale(" + encoger + ")";
-  // Espacio para que el "Sí" agrandado no tape el otro botón
-  document.querySelector(".botones").style.gap = (14 + intentos * 14) + "px";
-  document.querySelector(".botones").style.paddingTop = (intentos * 10) + "px";
-
+  const frases = CONFIG.RESPUESTAS_NO;
+  subtexto.textContent = frases[Math.min(intentos - 1, frases.length - 1)];
   if (navigator.vibrate) navigator.vibrate(20);
+
+  if (intentos >= frases.length) {
+    botonNo.style.display = "none";   // ya no hay opción: solo queda "¡Sí!"
+  } else {
+    moverNo();
+  }
+});
+
+// Si cambia el tamaño o se gira el teléfono, el "No" vuelve a un lugar visible
+window.addEventListener("resize", () => {
+  if (botonNo.style.position === "fixed" && botonNo.style.display !== "none") moverNo();
 });
 
 /* ---------- Botón "¡Sí!" ---------- */
-botonSi.addEventListener("click", async () => {
+botonSi.addEventListener("click", () => {
   if (tarjeta.classList.contains("acepto")) return;
   tarjeta.classList.add("acepto");
-  $("titulo-exito").textContent = "¡Siii, " + CONFIG.NOMBRE + "!";
+  botonNo.style.display = "none";
   lluviaDeCorazones();
   if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
 
   if (CONFIG.WHATSAPP) {
-    const texto = encodeURIComponent("¡Dije que sí! 💖");
     const wa = $("wa");
-    wa.href = "https://wa.me/" + CONFIG.WHATSAPP + "?text=" + texto;
+    wa.href = "https://wa.me/" + CONFIG.WHATSAPP + "?text=" + encodeURIComponent("¡Dije que sí! 💖");
     wa.style.display = "inline-block";
   }
 
   const detalle = intentos > 0
-    ? " Tocó \u201cPor favor...\u201d " + intentos + (intentos === 1 ? " vez" : " veces") + " antes."
+    ? " Tocó \u201cNo\u201d " + intentos + (intentos === 1 ? " vez" : " veces") + " antes."
     : " Dijo que sí a la primera.";
   avisar(
     CONFIG.NOMBRE + " dijo que SÍ 💚",
@@ -336,9 +397,8 @@ botonSi.addEventListener("click", async () => {
 /* ---------- Corazones ---------- */
 function lluviaDeCorazones() {
   const caja = $("lluvia");
-  const emojis = ["💖", "💗", "💕", "💘", "🌸"];
-  const total = 36;
-  for (let i = 0; i < total; i++) {
+  const emojis = ["💖", "💗", "💕", "💘", "🌸", "🎬"];
+  for (let i = 0; i < 36; i++) {
     const s = document.createElement("span");
     s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     s.style.left = Math.random() * 100 + "vw";
